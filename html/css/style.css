@@ -1,5 +1,10 @@
+.header {
+  background-image: url('/html/images/background.jpg');
+  border: transparent solid 1px;
+}
 .container {
-  border: 0.5px solid gray;
+  background-color:  white;
+  border:  absolute 0.5px solid gray;
   margin: 100px;
   box-shadow: 5px 10px 18px gray;
 }
@@ -24,8 +29,9 @@
 .close {
   padding: 20px;
 }
-.background {
+.cartbackground {
   background-color: rgb(216, 206, 206);
+  width: 35%;
 }
 ul.breadcrumb li {
   display: inline;
@@ -35,4 +41,37 @@ ul.breadcrumb li+li:before {
   padding: 8px;
   color: black;
   content: "/\00a0";
+}
+.newCard {
+  border:none;
+  align-self: center;
+}
+
+.imgWallet {
+  display: block;
+  border: 1px solid grey;
+  margin-top:  15px;
+  margin-left: 45px;
+  width: 50%;
+  border-radius: 4px;
+  padding: 5px;
+  width: 150px;
+}
+
+.imgWallet:hover {
+  box-shadow: 0 2px 0 2px darkgray;
+}
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  max-width: 300px;
+  margin: auto;
+  text-align: center;
+}
+.caption {
+  margin-top: 0px;
+  margin-left: 20%;
+  font-size: 15px;
+}
+.imgCart {
+
 }

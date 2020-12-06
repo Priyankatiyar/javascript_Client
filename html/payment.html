@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Payment_Method</title>
+        <link rel="stylesheet" href="css/style2.css">
+        <link rel="stylesheet" href="http://yui.yahooapis.com/3.18.1/build/cssreset/cssreset-min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        
+    </head>
+    <body >
+        <div class="co_container">
+            <div class="co_flex-container">
+                <div class="co_flex-item co_growCheck">
+                    <b>Checkout</b>
+                </div>
+                <div class="co_flex-item co_shipgrow">
+                    <ul class="co_breadcrumb">
+                        <li>Shipping</li>
+                        <li><b>Payment method</b></li>
+                        <li>Confirmation</li>
+                    </ul>
+                </div>
+                <div><i class="fa fa-window-close co_close"></i></div>
+            </div>
+
+            <div class="co_flex-container">
+                <!-- Payment Block -->
+                <div class="co_flex-item co_growPay">
+                    <div> Wallet<hr>
+                        <div class ="co_flex-item co_wallet" >
+                            <div><img class="co_imgWallet" src="/html/images/cards/discover.png" alt="Discover Card" title ="Discover Card" >
+                                <figcaption class="co_caption">Ending with 8899</figcaption>
+                            </div>
+                            <div><img class="co_imgWallet" src="/html/images/cards/mastercard.png" alt="Master Card">
+                                <figcaption class="co_caption">Ending with 8899</figcaption>
+                            </div>
+                            <div><img class="co_imgWallet" src="/html/images/cards/visa.png" alt="Visa Card">
+                                <figcaption class="co_caption">Ending with 8899</figcaption>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div >New Card<hr>
+                        <form class=" co_flex-item co_newCard  "  >
+                            <input type="text"  id= "name" placeholder="Name on Card"><br>
+                            <input type="number" id= "cardnum" placeholder="XXXX-XXXX-XXXX-XXXX"><br>
+                            <input type ="text" id= "exp" placeholder="MM/YY">
+                            <input type ="number" id= "cvv" placeholder="CVV">  <br> 
+                            <button type="button" id= "button" >CONTINUE</button>
+                        </form>
+                    </div>
+
+                </div>
+                <!-- Cart Block -->
+                <div class= "co_cartbackground co_growCheck">
+                    <div class="co_first">
+                        <div class="co_item ">
+                        <div class="co_product">
+                        <img class='co_item_image' src="./images/products/mobile-holder.jpg">
+                        </div>
+                        <div class="co_amt">
+                        <div>
+                        <b>&nbsp;Mobile Holder</b><br></div>
+                        <div class="co_buy"> <i>Black</i>
+                        <br> <b> Quantity:1</b>
+                        </div>
+                        </div>
+                        <div class="co_price"><t> </t><b>$10.00</b></div>
+                        </div>
+                        <hr>
+                        <div class="co_item">
+                        <div class="product">
+                        <img class="co_item_image" src="./images/products/rado.jpg">
+                        </div>
+                        <div class="co_amt">
+                        <div>
+                        <b>Rado Watch</b><br>
+                        </div>
+                        <div class="co_buy"><i>Black</i>
+                        <br><b>Quantity:1</b>
+                        </div>
+                        </div>
+                        <div class="co_price"><b>$10.00</b></div>
+                        </div>
+                        <hr>
+                        <div class="co_item">
+                        <div class="co_product">
+                        <img class='co_item_image' src="./images/products/usb-c-2-micro.jpeg" >
+                        </div>
+                        <div class="co_amt">
+                        <div>
+                        <b>C-Type to micro Convertor</b><br></div>
+                        <div class="co_buy"> <i>Black</i>
+                        <br> <b>Quantity:1</b>
+                        </div>
+                        </div>
+                        <div class="co_price"><b>$ 10.00</b></div>
+                        </div>
+                        <hr>
+                        <div class="co_item">
+                        <div class="co_product">
+                        <img class="co_item_image" src="images/products/hard-case.jpg">
+                        </div>
+                            <div class="co_amt">
+                                <div><b>Mobile Case</b>
+                                </div>
+                                <div class="co_buy"><i>Black</i>
+                                <br><b> Quantity:1</b>
+                                </div>
+                            </div>
+                        <div class="co_price"><b>$10.00</b></div>
+                        </div><br><br>
+                        <div class="co_second">
+                            <hr>
+                            <div class="co_item">
+                                <div class="summary">Sub Total</div>
+                                <div class="co_price">$100.00</div>
+
+                            </div><br>
+                            <div class="co_item">
+                                <div class="summary">Shipping</div>
+                                <div class="co_price">$10.00</div>
+                            </div><br>
+
+                            <div class="co_item">
+                                <div class="summary">Taxes</div>
+                                <div class="co_price">$5.00</div>
+                            </div><hr>
+                            <div class="co_item">
+                                <div class="summary"><b>Total</b></div>
+                                <div class="co_price"><b>$115.00</b></div>
+
+                            </div>
+                            
+                        </div>
+                            
+                    </div>
+                </div>
+                </div>
+            </div>
+
+       </div>
+
+    </body>
+
+</html>
