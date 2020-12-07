@@ -41,7 +41,7 @@ body {
   .co_cartbackground {
     display: flex;
     flex:2;
-    background-color: lightgray;
+    background-color: rgb(252, 252, 252);
     width: 40%;
   }
   ul.co_breadcrumb li {
