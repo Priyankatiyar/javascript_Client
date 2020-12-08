@@ -11,11 +11,11 @@
     </head>
     <body >
         <div class="co_container">
-            <div class="co_flex-container">
-                <div class="co_flex-item co_growCheck">
+            <div class="co_checkout--container1">
+                <div class="co_item--checkout">
                     <b>Checkout</b>
                 </div>
-                <div class="co_flex-item co_shipgrow">
+                <div class="co_checkout1">
                     <ul class="co_breadcrumb">
                         <li>Shipping</li>
                         <li><b>Payment method</b></li>
@@ -25,44 +25,39 @@
                 <div><i class="fa fa-window-close co_close"></i></div>
             </div>
 
-            <div class="co_flex-container">
+            <div class="co_payment--container2">
                 <!-- Payment Block -->
-                <div class="co_flex-item co_growPay">
-                    <div> Wallet<hr>
-                        <div class ="co_flex-item co_wallet" >
-                            <div><img class="co_imgWallet" src="/html/images/cards/discover.png" alt="Discover Card" title ="Discover Card" >
-                                <figcaption class="co_caption">Ending with 8899</figcaption>
-                            </div>
-                            <div><img class="co_imgWallet" src="/html/images/cards/mastercard.png" alt="Master Card">
-                                <figcaption class="co_caption">Ending with 8899</figcaption>
-                            </div>
-                            <div><img class="co_imgWallet" src="/html/images/cards/visa.png" alt="Visa Card">
-                                <figcaption class="co_caption">Ending with 8899</figcaption>
-                            </div>
+                <div class="co_flex--payment ">
+                    <div class="co_wallet"> Wallet<hr> 
+                        <div class="co_flex--img">
+                            <img  class="co_img--wallet" src="images/cards/discover.png" alt="">
+                            <img class="co_img--wallet" src="images/cards/mastercard.png" alt="">
+                            <img class="co_img--wallet" src="images/cards/visa.png" alt="">
                         </div>
-                    </div>
+                             
+                    </div><br><br>
 
                     <div >New Card<hr>
-                        <form class=" co_flex-item co_newCard  "  >
-                            <input type="text"  id= "name" placeholder="Name on Card"><br>
-                            <input type="number" id= "cardnum" placeholder="XXXX-XXXX-XXXX-XXXX"><br>
+                        <form class="co_newCard"  >
+                            <input type="text"  id= "name" placeholder="Name on Card"><br><br>
+                            <input type="number" id= "cardnum" placeholder="XXXX-XXXX-XXXX-XXXX"><br><br>
                             <input type ="text" id= "exp" placeholder="MM/YY">
-                            <input type ="number" id= "cvv" placeholder="CVV">  <br> 
+                            <input type ="number" id= "cvv" placeholder="CVV">  <br> <br>
                             <button type="button" id= "button" >CONTINUE</button>
                         </form>
                     </div>
 
                 </div>
                 <!-- Cart Block -->
-                <div class= "co_cartbackground co_growCheck">
+                <div class= "co_cartbackground ">
                     <div class="co_first">
                         <div class="co_item ">
                         <div class="co_product">
-                        <img class='co_item_image' src="./images/products/mobile-holder.jpg">
+                        <img class='co_item--image' src="./images/products/mobile-holder.jpg">
                         </div>
                         <div class="co_amt">
                         <div>
-                        <b>&nbsp;Mobile Holder</b><br></div>
+                        <b>Mobile Holder</b><br></div>
                         <div class="co_buy"> <i>Black</i>
                         <br> <b> Quantity:1</b>
                         </div>
@@ -71,8 +66,8 @@
                         </div>
                         <hr>
                         <div class="co_item">
-                        <div class="product">
-                        <img class="co_item_image" src="./images/products/rado.jpg">
+                        <div class="co_product">
+                        <img class="co_item--image" src="./images/products/rado.jpg">
                         </div>
                         <div class="co_amt">
                         <div>
@@ -87,7 +82,7 @@
                         <hr>
                         <div class="co_item">
                         <div class="co_product">
-                        <img class='co_item_image' src="./images/products/usb-c-2-micro.jpeg" >
+                        <img class='co_item--image' src="./images/products/usb-c-2-micro.jpeg" >
                         </div>
                         <div class="co_amt">
                         <div>
@@ -96,12 +91,12 @@
                         <br> <b>Quantity:1</b>
                         </div>
                         </div>
-                        <div class="co_price"><b>$ 10.00</b></div>
+                        <div class="co_price"><b>$10.00</b></div>
                         </div>
                         <hr>
                         <div class="co_item">
                         <div class="co_product">
-                        <img class="co_item_image" src="images/products/hard-case.jpg">
+                        <img class="co_item--image" src="images/products/hard-case.jpg">
                         </div>
                             <div class="co_amt">
                                 <div><b>Mobile Case</b>
@@ -111,7 +106,7 @@
                                 </div>
                             </div>
                         <div class="co_price"><b>$10.00</b></div>
-                        </div><br><br>
+                        </div><br><br><br>
                         <div class="co_second">
                             <hr>
                             <div class="co_item">
@@ -140,9 +135,6 @@
                 </div>
                 </div>
             </div>
-
-       </div>
-
     </body>
 
 </html>
