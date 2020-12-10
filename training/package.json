@@ -19,7 +19,7 @@
     "start": "react-scripts start",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
-    "test:c": "npm run test -- --coverage",
+    "test:c": "npm run test -- --coverage --watchAll=false",
     "commit": "npx git-cz",
     "build": "react-scripts build",
     "test": "react-scripts test",
