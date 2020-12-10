@@ -9,7 +9,7 @@ width: 95%;
 padding: 0.7%;
 border: 1px solid gray;
 border-radius: 5px;
-color: solid gray;
+color: solid darkgray;
 
 ${(props) => props.error
 && css`
