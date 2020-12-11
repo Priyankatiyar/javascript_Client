@@ -1,11 +1,11 @@
 /* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
-import { TextFieldDemo } from './pages';
+import { InputDemo } from './pages/InputDemo';
 
 class App extends Component {
   render() {
     return (
-      <TextFieldDemo />
+      <InputDemo />
     );
   }
 }
