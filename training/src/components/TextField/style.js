@@ -9,7 +9,6 @@ width: 100%;
 font-size: 18px;
 font-weight: bold;
 color: solid darkgray;
-
 `;
 
 const Input = styled.input`

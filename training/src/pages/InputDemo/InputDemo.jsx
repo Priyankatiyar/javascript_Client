@@ -35,6 +35,7 @@ class InputDemo extends React.Component {
 
   handlePositionChange = (e) => {
     const { sport } = this.state;
+
     return sport === 'cricket' ? this.setState({ cricket: e.target.value }, () => console.log(this.state)) : this.setState({ football: e.target.value }, () => console.log(this.state));
   }
 
@@ -51,13 +52,16 @@ class InputDemo extends React.Component {
 
   render() {
     const { sport } = this.state;
+
     return (
       <>
         <div>
+
           <Text><p>Name</p></Text>
           <TextField
             onChange={this.handleNameChange}
           />
+
           <Text>
             <p>Select the game you play?</p>
           </Text>
@@ -79,9 +83,11 @@ class InputDemo extends React.Component {
               )
             }
           </div>
+
         </div>
       </>
     );
   }
 }
+
 export default InputDemo;

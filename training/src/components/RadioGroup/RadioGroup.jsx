@@ -5,6 +5,7 @@ const RadioGroup = (props) => {
   const {
     options, onChange,
   } = props;
+
   return (
     <>
       {
@@ -19,10 +20,13 @@ const RadioGroup = (props) => {
     </>
   );
 };
+
 RadioGroup.propTypes = {
   onChange: PropTypes.func.isRequired,
   options: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
+
 RadioGroup.defaultProps = {
 };
+
 export default RadioGroup;
