@@ -1,3 +1,1 @@
-import RadioGroup from './RadioGroup';
-
-export { RadioGroup };
+export { default as RadioGroup } from './RadioGroup';

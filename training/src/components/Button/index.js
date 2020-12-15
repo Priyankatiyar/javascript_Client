@@ -1,3 +1,1 @@
-import ButtonField from './Button';
-
-export { ButtonField };
+export { default as ButtonField } from './Button';
