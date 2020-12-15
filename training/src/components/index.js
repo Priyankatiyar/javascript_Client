@@ -1,5 +1,5 @@
-export { TextField } from './TextField/index';
-export { Slider } from './slider/index';
-export { ButtonField } from './Button/index';
+export { TextField } from './TextField';
+export { Slider } from './slider';
+export { ButtonField } from './Button';
 export { SelectField } from './SelectField';
-export { RadioGroup } from './RadioGroup/index';
+export { RadioGroup } from './RadioGroup';
