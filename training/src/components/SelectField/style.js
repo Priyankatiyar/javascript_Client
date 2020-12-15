@@ -9,5 +9,7 @@ border-radius: 4px;
 box-sizing: border-box;
 background-color: lightgray;
 `;
-
-export default Select;
+const Err = styled.p`
+color: red;
+`;
+export { Select, Err };
