@@ -1,11 +1,11 @@
 /* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
-import { InputDemo } from './pages/InputDemo';
+import { ChildrenDemo } from './pages/ChildrenDemo';
 
 class App extends Component {
   render() {
     return (
-      <InputDemo />
+      <ChildrenDemo />
     );
   }
 }
