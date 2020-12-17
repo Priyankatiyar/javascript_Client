@@ -13,8 +13,11 @@ import {
 class InputDemo extends React.Component {
    schema = yup.object().shape({
      name: yup.string().required('Please Enter your Name').min(3, 'Please enter no less than 3 characters'),
-     email: yup.string().required('Please Enter your Em').min(3, 'Please enter no less than 3 characters'),
-     password: yup.string().required('Sport is required field '),
+     sport: yup.string().required('Sport is required field '),
+     cricket: yup.string().when('sport', {
+       is: 'cricket',
+       then: yup.string().required('What you do is a required field'),
+     }),
      football: yup.string().when('sport', {
        is: 'football',
        then: yup.string().required('What you do is a required field'),
