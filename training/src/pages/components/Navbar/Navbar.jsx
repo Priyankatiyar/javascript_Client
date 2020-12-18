@@ -12,6 +12,9 @@ const useStyles = makeStyles(() => ({
   title: {
     flexGrow: 1,
   },
+  logout: {
+    flexGrow: 0.05,
+  },
 }));
 
 export default function NavBar() {
@@ -28,9 +31,11 @@ export default function NavBar() {
           <Button color="inherit">TEXTFIELD DEMO</Button>
           <Button color="inherit">INPUT DEMO</Button>
           <Button color="inherit">CHILDREN DEMO</Button>
-          <Button color="inherit"> LOGOUT</Button>
+          &nbsp;&nbsp;
+          <Button color="inherit" className={classes.logout}>LOGOUT</Button>
         </Toolbar>
       </AppBar>
     </div>
+
   );
 }
