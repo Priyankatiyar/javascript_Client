@@ -1,6 +1,7 @@
 import { Button } from '@material-ui/core';
 import React from 'react';
 import AddDialog from './components/AddDialog/AddDialog';
+import NavBar from '../components/Navbar/Navbar';
 
 class Trainee extends React.Component {
   constructor(props) {
@@ -12,7 +13,11 @@ class Trainee extends React.Component {
     const { isOpen } = this.state;
     return (
       <>
-        <Button variant="outlined" color="primary" href="#outlined-buttons" onClick={() => this.setState({ isOpen: true })}>Add Trainee</Button>
+        <NavBar />
+        &nbsp;&nbsp;&nbsp;
+        <div>
+          <Button variant="outlined" color="primary" href="#outlined-buttons" onClick={() => this.setState({ isOpen: true })}>Add Trainee</Button>
+        </div>
         <AddDialog open={isOpen} />
       </>
     );
