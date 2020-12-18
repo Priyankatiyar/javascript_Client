@@ -5,7 +5,6 @@ import {
   CardContent, Typography, Card, Avatar, CssBaseline, withStyles,
 } from '@material-ui/core';
 import { Email, VisibilityOff, LockOutlined } from '@material-ui/icons';
-
 import * as yup from 'yup';
 
 const LoginStyle = (theme) => ({
@@ -19,14 +18,15 @@ const LoginStyle = (theme) => ({
     marginLeft: theme.spacing(19),
     marginTop: theme.spacing(2),
   },
-
 });
 
 class Login extends React.Component {
   schema = yup.object().shape({
-    email: yup.string().trim().email().required('Email is a required field'),
-    password: yup.string().required('Password is a required field').matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/, 'Must contain 8 characters, at least one uppercase letter, one lowercase letter and one number'),
-
+    email: yup.string()
+      .trim().email().required('Email is a required field'),
+    password: yup.string()
+      .required('Password is a required field')
+      .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/, 'Must contain 8 characters, at least one uppercase letter, one lowercase letter and one number'),
   });
 
   constructor(props) {
@@ -45,104 +45,104 @@ class Login extends React.Component {
     this.setState({ [key]: value });
   };
 
-    hasErrors = () => {
+  hasErrors = () => {
+    try {
+      this.schema.validateSync(this.state);
+    } catch (err) {
+      return true;
+    }
+    return false;
+  }
+
+  getError = (field) => {
+    const { touched } = this.state;
+    if (touched[field] && this.hasErrors()) {
       try {
-        this.schema.validateSync(this.state);
+        this.schema.validateSyncAt(field, this.state);
+        return '';
       } catch (err) {
-        return true;
+        return err.message;
       }
-      return false;
     }
+    return '';
+  };
 
-    getError = (field) => {
-      const { touched } = this.state;
-      if (touched[field] && this.hasErrors()) {
-        try {
-          this.schema.validateSyncAt(field, this.state);
-          return '';
-        } catch (err) {
-          return err.message;
-        }
-      }
-      return '';
-    };
+  isTouched = (field) => {
+    const { touched } = this.state;
+    this.setState({
+      touched: {
+        ...touched,
+        [field]: true,
+      },
+    });
+  }
 
-    isTouched = (field) => {
-      const { touched } = this.state;
-      this.setState({
-        touched: {
-          ...touched,
-          [field]: true,
-        },
-      });
-    }
-
-    render() {
-      const { classes } = this.props;
-      return (
-        <>
-          <div className={classes.main}>
-            <CssBaseline />
-            <Card open aria-labelledby="form-dialog-title">
-              <Avatar className={classes.icon}>
-                <LockOutlined />
-              </Avatar>
-              <Typography variant="h4" align="center">Login</Typography>
-              <CardContent>
-                <form>
-                  <div>
-                    <TextField
-                      required
-                      fullWidth
-                      id="outlined-required"
-                      label="Email Address"
-                      variant="outlined"
-                      helperText={this.getError('email')}
-                      error={!!this.getError('email')}
-                      onChange={this.handleChange('email')}
-                      onBlur={() => this.isTouched('email')}
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <Email />
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
-                  </div>
-                  <br />
-                  <div>
-                    <TextField
-                      required
-                      type="password"
-                      fullWidth
-                      id="outlined-required"
-                      label="Password"
-                      variant="outlined"
-                      helperText={this.getError('password')}
-                      error={!!this.getError('password')}
-                      onChange={this.handleChange('password')}
-                      onBlur={() => this.isTouched('password')}
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <VisibilityOff />
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
-                  </div>
+  render() {
+    const { classes } = this.props;
+    return (
+      <>
+        <div className={classes.main}>
+          <CssBaseline />
+          <Card open aria-labelledby="form-dialog-title">
+            <Avatar className={classes.icon}>
+              <LockOutlined />
+            </Avatar>
+            <Typography variant="h4" align="center">Login</Typography>
+            <CardContent>
+              <form>
+                <div>
+                  <TextField
+                    required
+                    fullWidth
+                    id="outlined-required"
+                    label="Email Address"
+                    variant="outlined"
+                    helperText={this.getError('email')}
+                    error={!!this.getError('email')}
+                    onChange={this.handleChange('email')}
+                    onBlur={() => this.isTouched('email')}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <Email />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </div>
+                <br />
+                <div>
+                  <TextField
+                    required
+                    type="password"
+                    fullWidth
+                    id="outlined-required"
+                    label="Password"
+                    variant="outlined"
+                    helperText={this.getError('password')}
+                    error={!!this.getError('password')}
+                    onChange={this.handleChange('password')}
+                    onBlur={() => this.isTouched('password')}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <VisibilityOff />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </div>
                 &nbsp;&nbsp;
-                  <div>
-                    <Button variant="contained" color="primary" disabled={this.hasErrors()} fullWidth>SIGN IN</Button>
-                  </div>
-                </form>
-              </CardContent>
-            </Card>
-          </div>
-        </>
-      );
-    }
+                <div>
+                  <Button variant="contained" color="primary" disabled={this.hasErrors()} fullWidth>SIGN IN</Button>
+                </div>
+              </form>
+            </CardContent>
+          </Card>
+        </div>
+      </>
+    );
+  }
 }
 
 Login.propTypes = {
