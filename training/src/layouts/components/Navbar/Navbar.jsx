@@ -1,9 +1,10 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
+import { Toolbar } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -27,10 +28,10 @@ export default function NavBar() {
           <Typography variant="h6" className={classes.title}>
             Trainee Portal
           </Typography>
-          <Button color="inherit">TRAINEE</Button>
-          <Button color="inherit">TEXTFIELD DEMO</Button>
-          <Button color="inherit">INPUT DEMO</Button>
-          <Button color="inherit">CHILDREN DEMO</Button>
+          <Button component={Link} to="/" color="inherit">TRAINEE</Button>
+          <Button component={Link} to="/text-field" color="inherit">TEXTFIELD DEMO</Button>
+          <Button component={Link} to="/inputDemo" color="inherit">INPUT DEMO</Button>
+          <Button component={Link} to="/childrenDemo" color="inherit">CHILDREN DEMO</Button>
           &nbsp;&nbsp;
           <Button color="inherit" className={classes.logout}>LOGOUT</Button>
         </Toolbar>

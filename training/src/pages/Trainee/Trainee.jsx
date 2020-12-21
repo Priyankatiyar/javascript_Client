@@ -1,7 +1,7 @@
 import { Button } from '@material-ui/core';
 import React from 'react';
 import AddDialog from './components/AddDialog/AddDialog';
-import NavBar from '../components/Navbar/Navbar';
+import NavBar from '../../layouts/components/Navbar/Navbar';
 
 class Trainee extends React.Component {
   constructor(props) {
