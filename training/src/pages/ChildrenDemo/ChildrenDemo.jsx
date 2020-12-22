@@ -1,7 +1,8 @@
 import React from 'react';
 import { ThemeProvider } from '@material-ui/core';
-import Math from '../../components/Math/Math';
+import { Math } from '../../components/Math';
 import Theme from '../../theme';
+import { Navbar } from '../../layouts/components/Navbar';
 
 class ChildrenDemo extends React.Component {
   getResult() {
@@ -13,6 +14,8 @@ class ChildrenDemo extends React.Component {
   render() {
     return (
       <>
+        <Navbar />
+        &nbsp;&nbsp;&nbsp;&nbsp;
         <ThemeProvider theme={Theme} />
         <Math first={7} second={4} operator="+">
           {

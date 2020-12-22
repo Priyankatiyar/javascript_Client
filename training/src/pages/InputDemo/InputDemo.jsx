@@ -6,6 +6,7 @@ import {
   TextField, SelectField, RadioGroup, ButtonField,
 } from '../../components';
 import { Text } from '../../components/TextField/style';
+import { Navbar } from '../../layouts/components/Navbar';
 import {
   selectOptions, radioOptionsCricket, radioOptionsFootball,
 } from '../../configs/constants';
@@ -119,6 +120,7 @@ class InputDemo extends React.Component {
 
     return (
       <>
+        <Navbar />
         <div>
 
           <Text><p>Name</p></Text>
