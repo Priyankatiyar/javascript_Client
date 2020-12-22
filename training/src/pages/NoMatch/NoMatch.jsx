@@ -1,9 +1,9 @@
 import React from 'react';
-import NavBar from '../../layouts/components/Navbar/Navbar';
+import { Navbar } from '../../layouts/components/Navbar';
 
 const NoMatch = () => (
   <div>
-    <NavBar />
+    <Navbar />
 
     <h1 align="center">Not Found!!</h1>
     <h2 align="center">Seems like page you are looking after does not exist!</h2>

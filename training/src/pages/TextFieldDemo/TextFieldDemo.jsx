@@ -1,14 +1,14 @@
 import React from 'react';
 import { TextField } from '../../components';
 import { Slider } from '../../components/slider';
-import NavBar from '../../layouts/components/Navbar/Navbar';
+import { Navbar } from '../../layouts/components/Navbar';
 import { Div } from '../../components/TextField/style';
 import { banners, DEFAULT_BANNER_IMAGE } from '../../configs/constants';
 
 const TextFieldDemo = () => (
 
   <Div>
-    <NavBar />
+    <Navbar />
     &nbsp;&nbsp;&nbsp;
     <div>
       <Slider altText="No Image" duration="2000" height="200" random banner={banners} defaultbanner={DEFAULT_BANNER_IMAGE} />
