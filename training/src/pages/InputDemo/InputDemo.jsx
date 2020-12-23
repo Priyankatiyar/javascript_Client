@@ -120,7 +120,6 @@ class InputDemo extends React.Component {
     return (
       <>
         <div>
-
           <Text><p>Name</p></Text>
           <TextField
             error={this.getError('name')}
