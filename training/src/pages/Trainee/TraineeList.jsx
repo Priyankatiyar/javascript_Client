@@ -5,6 +5,7 @@ import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
 import { AddDialog } from './components/AddDialog';
 import trainees from './data/trainee';
+import { TableComponent } from '../../components';
 
 const useStyles = (theme) => ({
   root: {
@@ -48,10 +49,31 @@ class TraineeList extends React.Component {
     return (
       <>
         <div className={classes.root}>
-          <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
-            ADD TRAINEELIST
-          </Button>
+          <div className={classes.dialog}>
+            <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
+              ADD TRAINEELIST
+            </Button>
+          </div>
           <AddDialog open={open} onClose={this.handleClose} onSubmit={() => this.handleSubmit} />
+          &nbsp;
+          &nbsp;
+          <TableComponent
+            id="id"
+            data={trainees}
+            column={
+              [
+                {
+                  field: 'name',
+                  label: 'Name',
+                  align: 'center',
+                },
+                {
+                  field: 'email',
+                  label: 'Email Address',
+                },
+              ]
+            }
+          />
           <ul>
             {trainees.map(({ name, id }) => (
               <li key={id}>
