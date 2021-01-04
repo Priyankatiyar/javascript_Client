@@ -1,7 +1,6 @@
 /* eslint-disable */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
 import { AddDialog } from './components/AddDialog';
@@ -109,4 +108,5 @@ TraineeList.propTypes = {
   match: PropTypes.objectOf(PropTypes.object).isRequired,
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
 };
+
 export default withStyles(useStyles)(TraineeList);
