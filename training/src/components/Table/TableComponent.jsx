@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Button from '@material-ui/core/Button';
 import {
   Table, TableCell, TableContainer, TableHead, TableRow, Paper, withStyles, TableBody,
-  TableSortLabel,
+  TableSortLabel, TablePagination,
 } from '@material-ui/core';
 
 const useStyles = (theme) => ({
@@ -29,7 +30,8 @@ const useStyles = (theme) => ({
 
 function TableComponent(props) {
   const {
-    classes, data, column, order, orderBy, onSort, onSelect,
+    id, classes, data, column, order, orderBy, onSort, onSelect,
+    actions, count, rowsPerPage, page, onChangePage,
   } = props;
 
   return (
@@ -58,25 +60,41 @@ function TableComponent(props) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {
-            data && data.length && data.map((item) => (
-              <TableRow className={classes.tableRow}>
-                {
-                  column.length && column.map(({ align, field, format }) => (
-                    <TableCell onClick={(event) => onSelect(event, item.name)} align={align}>
-                      {format ? format(item[field]) : item[field]}
-                    </TableCell>
-                  ))
-                }
-              </TableRow>
-            ))
-          }
+          {(rowsPerPage > 0
+            ? data.slice()
+            : data
+          ).map((item) => (
+            <TableRow className={classes.tableRow} key={item[id]}>
+              {
+                column && column.length && column.map(({ align, field, format }) => (
+                  <TableCell onClick={(event) => onSelect(event, item.name)} align={align} component="th" scope="row" order={order} ordery={orderBy}>
+                    {format ? format(item[field]) : item[field]}
+                  </TableCell>
+                ))
+              }
+              {actions && actions.length && actions.map(({ icon, handler }) => (
+                <TableRow>
+                  <Button onClick={() => handler(item)}>
+                    {icon}
+                  </Button>
+                </TableRow>
+              ))}
+            </TableRow>
+          ))}
         </TableBody>
+        <TablePagination
+          rowsPerPageOptions={0}
+          count={count}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onChangePage={onChangePage}
+        />
       </Table>
     </TableContainer>
   );
 }
 TableComponent.propTypes = {
+  id: PropTypes.string.isRequired,
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
   data: PropTypes.arrayOf(PropTypes.object).isRequired,
   column: PropTypes.arrayOf(PropTypes.object).isRequired,
@@ -84,6 +102,11 @@ TableComponent.propTypes = {
   orderBy: PropTypes.string,
   onSelect: PropTypes.func.isRequired,
   onSort: PropTypes.func.isRequired,
+  actions: PropTypes.arrayOf(PropTypes.object).isRequired,
+  count: PropTypes.number.isRequired,
+  page: PropTypes.number.isRequired,
+  rowsPerPage: PropTypes.number.isRequired,
+  onChangePage: PropTypes.func.isRequired,
 };
 TableComponent.defaultProps = {
   order: '',
