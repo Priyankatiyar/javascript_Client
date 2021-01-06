@@ -9,22 +9,25 @@ import {
   NoMatch,
 } from './pages';
 import { AuthRoute, PrivateRoute } from './routes/index';
+import { SnackBarProvider } from './contexts/SnackBarProvider';
 
 class App extends Component {
   render() {
     return (
       <Router>
-        <Switch>
-          <Route path="/" exact>
-            <Redirect to="/trainee" />
-          </Route>
-          <PrivateRoute path="/login" component={Login} />
-          <AuthRoute path="/text-field" component={TextFieldDemo} />
-          <AuthRoute path="/childrenDemo" component={ChildrenDemo} />
-          <AuthRoute path="/inputDemo" component={InputDemo} />
-          <AuthRoute path="/trainee" component={Trainee} />
-          <AuthRoute component={NoMatch} />
-        </Switch>
+        <SnackBarProvider>
+          <Switch>
+            <Route path="/" exact>
+              <Redirect to="/trainee" />
+            </Route>
+            <PrivateRoute path="/login" component={Login} />
+            <AuthRoute path="/text-field" component={TextFieldDemo} />
+            <AuthRoute path="/childrenDemo" component={ChildrenDemo} />
+            <AuthRoute path="/inputDemo" component={InputDemo} />
+            <AuthRoute path="/trainee" component={Trainee} />
+            <AuthRoute component={NoMatch} />
+          </Switch>
+        </SnackBarProvider>
       </Router>
     );
   }
