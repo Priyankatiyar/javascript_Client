@@ -2,11 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   Button, Dialog, DialogTitle, DialogContent, DialogContentText,
+  DialogActions,
 } from '@material-ui/core';
 import { Email, VisibilityOff, Person } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
 import schema from './DialogSchema';
 import DialogField from './DialogField';
+import { MyContext } from '../../../../contexts';
 
 const stylePassword = () => ({
   passwordField: {
@@ -89,7 +91,9 @@ class AddDialog extends React.Component {
       const {
         open, onClose, onSubmit, classes,
       } = this.props;
-      const { name, email, password } = this.state;
+      const {
+        name, email, password, confirmPassword,
+      } = this.state;
       const textBox = [];
       Object.keys(constant).forEach((key) => {
         textBox.push(<DialogField
@@ -130,11 +134,29 @@ class AddDialog extends React.Component {
                 </div>
               </div>
           &nbsp;
+            </DialogContent>
+            <DialogActions>
               <div align="right">
                 <Button onClick={onClose} color="primary">CANCEL</Button>
-                <Button variant="contained" color="primary" disabled={this.hasErrors()} onClick={() => onSubmit()({ name, email, password })}>SUBMIT</Button>
+                <MyContext.Consumer>
+                  {({ openSnackBar }) => (
+                    <Button
+                      color="primary"
+                      variant="contained"
+                      onClick={() => {
+                        onSubmit({
+                          name, email, password, confirmPassword,
+                        });
+                        openSnackBar('Trainee added successfully! ', 'success');
+                      }}
+                      disabled={this.hasErrors()}
+                    >
+                      Submit
+                    </Button>
+                  )}
+                </MyContext.Consumer>
               </div>
-            </DialogContent>
+            </DialogActions>
           </Dialog>
         </>
       );
