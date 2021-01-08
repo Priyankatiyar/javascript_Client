@@ -5,14 +5,10 @@ import localStorage from 'local-storage';
 const callApi = async (data, method, url) => {
   try {
     const baseUrl = `http://localhost:9001/api/user${url}`;
-    const { email, password } = data;
     const response = await axios({
       method,
       url: baseUrl,
-      data: {
-        email,
-        password,
-      },
+      data,
     });
     localStorage.set('token', response.data);
     const token = localStorage.get('token');
@@ -21,7 +17,7 @@ const callApi = async (data, method, url) => {
   } catch (error) {
     // eslint-disable-next-line no-console
     console.log('Inside catch', error);
-    return { status: 'error', message: 'Incorrect LOgin Credentials!' };
+    return { status: 'error', message: 'Incorrect LOgin' };
   }
 };
 
