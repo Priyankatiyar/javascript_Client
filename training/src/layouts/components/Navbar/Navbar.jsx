@@ -33,7 +33,14 @@ export default function Navbar() {
           <Button component={Link} to="/inputDemo" color="inherit">INPUT DEMO</Button>
           <Button component={Link} to="/childrenDemo" color="inherit">CHILDREN DEMO</Button>
           &nbsp;&nbsp;
-          <Button color="inherit" className={classes.logout}>LOGOUT</Button>
+          <Button
+            color="inherit"
+            className={classes.logout}
+            href="/login"
+            onClick={() => { localStorage.clear('token'); }}
+          >
+            LOGOUT
+          </Button>
         </Toolbar>
       </AppBar>
     </div>

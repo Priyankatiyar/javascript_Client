@@ -9,7 +9,7 @@ import {
   NoMatch,
 } from './pages';
 import { AuthRoute, PrivateRoute } from './routes/index';
-import { SnackBarProvider } from './contexts/SnackBarProvider';
+import { SnackBarProvider } from './contexts';
 
 class App extends Component {
   render() {
@@ -20,12 +20,12 @@ class App extends Component {
             <Route path="/" exact>
               <Redirect to="/trainee" />
             </Route>
-            <PrivateRoute path="/login" component={Login} />
-            <AuthRoute path="/text-field" component={TextFieldDemo} />
-            <AuthRoute path="/childrenDemo" component={ChildrenDemo} />
-            <AuthRoute path="/inputDemo" component={InputDemo} />
-            <AuthRoute path="/trainee" component={Trainee} />
-            <AuthRoute component={NoMatch} />
+            <AuthRoute path="/login" component={Login} />
+            <PrivateRoute path="/text-field" component={TextFieldDemo} />
+            <PrivateRoute path="/childrenDemo" component={ChildrenDemo} />
+            <PrivateRoute path="/inputDemo" component={InputDemo} />
+            <PrivateRoute path="/trainee" component={Trainee} />
+            <PrivateRoute component={NoMatch} />
           </Switch>
         </SnackBarProvider>
       </Router>
