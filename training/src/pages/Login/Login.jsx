@@ -1,11 +1,17 @@
+/* eslint-disable */
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
   TextField, Button, InputAdornment,
   CardContent, Typography, Card, Avatar, CssBaseline, withStyles,
+  CircularProgress,
 } from '@material-ui/core';
 import { Email, VisibilityOff, LockOutlined } from '@material-ui/icons';
 import * as yup from 'yup';
+import localStorage from 'local-storage';
+import { Redirect } from 'react-router-dom';
+import callApi from '../../libs/utils/api';
+import { MyContext } from '../../contexts';
 
 const LoginStyle = (theme) => ({
   main: {
@@ -39,6 +45,9 @@ class Login extends React.Component {
     this.state = {
       email: '',
       password: '',
+      loading: false,
+      redirect: false,
+      hasError: true,
       touched: {
         Email: false,
         Password: false,
@@ -82,8 +91,49 @@ class Login extends React.Component {
     });
   }
 
+  handleRedirect = () => {
+    const { redirect } = this.state;
+    if (redirect) {
+      return <Redirect to="/trainee" />;
+    }
+  }
+
+  onClickHandler = async (data, openSnackBar) => {
+    console.log('Data is :', data);
+    this.setState({
+      loading: true,
+      hasError: true,
+    });
+    const res= await callApi(data, 'post', '/login');
+    console.log('ResponseErr', res);
+    this.setState({ loading: false });
+    const response = localStorage.get('token');
+    console.log('respone',response);
+    if (response && response.status === 200) {
+      this.setState({
+        redirect: true,
+        hasError: false,
+        message: 'Successfully Login!',
+      }, () => {
+        const { message } = this.state;
+        openSnackBar(message, 'success');
+      });
+    } else {
+      this.setState({
+        message: 'Login Failed, Record Not Found',
+      }, () => {
+        const { message } = this.state;
+        openSnackBar(message, 'error');
+      });
+    }
+  }
+
   render() {
     const { classes } = this.props;
+    const {
+      email, password, loading,
+    } = this.state;
+    this.hasErrors();
     return (
       <>
         <div className={classes.main}>
@@ -139,7 +189,27 @@ class Login extends React.Component {
                 </div>
                 &nbsp;&nbsp;
                 <div>
-                  <Button variant="contained" color="primary" disabled={this.hasErrors()} fullWidth>SIGN IN</Button>
+                  <MyContext.Consumer>
+                    {({ openSnackBar }) => (
+                      <Button
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        className={classes.submit}
+                        disabled={this.hasErrors()}
+                        onClick={() => {
+                          this.onClickHandler({ email, password }, openSnackBar);
+                        }}
+                      >
+                        {loading && (
+                          <CircularProgress />
+                        )}
+                        {loading && <span>Signing in</span>}
+                        {!loading && <span>Sign in</span>}
+                        {this.handleRedirect()}
+                      </Button>
+                    )}
+                  </MyContext.Consumer>
                 </div>
               </form>
             </CardContent>
