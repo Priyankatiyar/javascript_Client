@@ -114,8 +114,6 @@ class TraineeList extends React.Component {
           loading: false,
           message: 'This is an error while displaying Trainee',
         }, () => {
-          // const { message } = this.state;
-          // value.openSnackBar(message, 'error');
         });
       } else {
         const records = response.data[0];
