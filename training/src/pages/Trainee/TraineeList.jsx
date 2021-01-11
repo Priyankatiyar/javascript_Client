@@ -8,6 +8,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import { AddDialog, RemoveDialog, EditDialog } from './components/index';
 import trainees from './data/trainee';
 import { TableComponent } from '../../components';
+import callApi from '../../libs/utils/api';
 import { getDateFormatted } from '../../libs/utils/getDateFormatted';
 
 const useStyles = (theme) => ({
@@ -33,6 +34,10 @@ class TraineeList extends React.Component {
       rowsPerPage: 10,
       editData: {},
       deleteData: {},
+      count: 0,
+      limit: 20,
+      skip: 0,
+      dataObj: [],
     };
   }
 
@@ -83,14 +88,47 @@ class TraineeList extends React.Component {
   }
 
   handleChangePage = (event, newPage) => {
+    this.componentDidMount(newPage);
     this.setState({
       page: newPage,
     });
   };
 
+  handleChangeRowsPerPage = (event) => {
+    this.setState({
+      rowsPerPage: event.target.value,
+      page: 0,
+
+    });
+  };
+
+  componentDidMount = () => {
+    const { limit, skip, dataObj } = this.state;
+    this.setState({ loading: true });
+    const value = this.context;
+    console.log('TraineeList value', value);
+    callApi({}, 'get', `trainee?skip=${skip}&limit=${limit}`).then((response) => {
+      console.log('List Response',response);
+      if (response.data === undefined) {
+        this.setState({
+          loading: false,
+          message: 'This is an error while displaying Trainee',
+        }, () => {
+          // const { message } = this.state;
+          // value.openSnackBar(message, 'error');
+        });
+      } else {
+        const records = response.data[0];
+        this.setState({ dataObj: records, loading: false, Count: 100 });
+        return response;
+      }
+      console.log('dataObj Response : ', response);
+    });
+  }
   render() {
     const { open, order, orderBy, EditOpen,
-      page, rowsPerPage, editData, DeleteOpen, deleteData, } = this.state;
+      page, rowsPerPage, editData, DeleteOpen, deleteData, loading, dataObj, Count, } = this.state;
+      console.log('dtOBJ:', dataObj);
     const { match: { url }, classes } = this.props;
     return (
       <>
@@ -116,8 +154,9 @@ class TraineeList extends React.Component {
             open={DeleteOpen}
           />
           <TableComponent
+            loader={loading}
             id="id"
-            data={trainees}
+            data={dataObj}
             column={
               [
                 {
@@ -151,10 +190,11 @@ class TraineeList extends React.Component {
             order={order}
             onSort={this.handleSort}
             onSelect={this.handleSelect}
-            count={100}
+            count={Count}
             page={page}
             rowsPerPage={rowsPerPage}
             onChangePage={this.handleChangePage}
+            onChangeRowsPerPage={this.handleChangeRowsPerPage}
           />
         </div>
       </>
