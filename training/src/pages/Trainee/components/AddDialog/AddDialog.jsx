@@ -2,13 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   Button, Dialog, DialogTitle, DialogContent, DialogContentText,
-  DialogActions,
+  DialogActions, CircularProgress,
 } from '@material-ui/core';
 import { Email, VisibilityOff, Person } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
+import localStorage from 'local-storage';
 import schema from './DialogSchema';
 import DialogField from './DialogField';
 import { MyContext } from '../../../../contexts';
+import callApi from '../../../../libs/utils/api';
 
 const stylePassword = () => ({
   passwordField: {
@@ -21,9 +23,9 @@ const stylePassword = () => ({
 });
 
 const constant = {
-  Name: Person,
-  Email,
-  Password: VisibilityOff,
+  name: Person,
+  email: Email,
+  password: VisibilityOff,
   'Confirm Password': VisibilityOff,
 };
 
@@ -31,10 +33,11 @@ class AddDialog extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      Name: '',
-      Email: '',
-      Password: '',
-      ConfirmPassword: '',
+      name: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+      loading: false,
       touched: {
         name: false,
         email: false,
@@ -81,18 +84,55 @@ class AddDialog extends React.Component {
     }
 
     passwordType = (key) => {
-      if (key === 'Password' || key === 'Confirm Password') {
+      if (key === 'password' || key === 'Confirm Password') {
         return 'password';
       }
       return '';
     }
 
+    onClickHandler = async (data, openSnackBar) => {
+      this.setState({
+        loading: true,
+        hasError: true,
+      });
+      await callApi(data, 'post', 'trainee');
+      this.setState({ loading: false });
+      const Token = localStorage.get('token');
+      if (Token !== 'undefined') {
+        this.setState({
+          hasError: false,
+          message: 'This is a successfully added trainee message',
+        }, () => {
+          const { message } = this.state;
+          openSnackBar(message, 'success');
+        });
+      } else {
+        this.setState({
+          hasError: false,
+          message: 'error in submitting',
+        }, () => {
+          const { message } = this.state;
+          openSnackBar(message, 'error');
+        });
+      }
+    }
+
+    formReset = () => {
+      this.setState({
+        name: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
+        touched: {},
+      });
+    }
+
     render() {
       const {
-        open, onClose, onSubmit, classes,
+        open, onClose, classes,
       } = this.props;
       const {
-        name, email, password, confirmPassword,
+        name, email, password, confirmPassword, loading,
       } = this.state;
       const textBox = [];
       Object.keys(constant).forEach((key) => {
@@ -143,15 +183,19 @@ class AddDialog extends React.Component {
                     <Button
                       color="primary"
                       variant="contained"
-                      onClick={() => {
-                        onSubmit({
-                          name, email, password, confirmPassword,
-                        });
-                        openSnackBar('Trainee added successfully! ', 'success');
-                      }}
                       disabled={this.hasErrors()}
+                      onClick={() => {
+                        this.onClickHandler({
+                          name, email, password, confirmPassword,
+                        }, openSnackBar);
+                        this.formReset();
+                      }}
                     >
-                      Submit
+                      {loading && (
+                        <CircularProgress size={15} />
+                      )}
+                      {loading && <span>Submitting</span>}
+                      {!loading && <span>Submit</span>}
                     </Button>
                   )}
                 </MyContext.Consumer>
@@ -166,6 +210,5 @@ export default withStyles(stylePassword)(AddDialog);
 AddDialog.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  onSubmit: PropTypes.func.isRequired,
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
 };
