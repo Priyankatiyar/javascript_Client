@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {
   TextField, Button, Dialog, DialogTitle,
-  DialogActions, DialogContentText, DialogContent,
+  DialogActions, DialogContentText, DialogContent, CircularProgress,
 } from '@material-ui/core';
 import PersonIcon from '@material-ui/icons/Person';
 import EmailIcon from '@material-ui/icons/Email';
@@ -9,10 +9,11 @@ import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import * as yup from 'yup';
 import { MyContext } from '../../../../contexts';
+import callApi from '../../../../libs/utils/api';
 
 const schema = yup.object().shape({
-  name: yup.string().required('Name is required field'),
-  email: yup.string().required('Email Address is required field').matches(/^[A-Za-z.0-9]{3,}@[A-Za-z]{5,10}[.]{1,1}[A-Za-z]{3,4}$/, 'Email Address must be valid field'),
+  name: yup.string().trim().required('Name is required field'),
+  email: yup.string().trim().required('Email Address is required field').email(),
 });
 
 const useStyles = () => ({
@@ -30,6 +31,7 @@ class EditDialog extends Component {
     this.state = {
       name: '',
       email: '',
+      loading: false,
       error: {
         name: '',
         email: '',
@@ -98,12 +100,45 @@ class EditDialog extends Component {
     return error[field];
   }
 
+  onEditHandler = async (Data, openSnackBar) => {
+    const { onSubmit } = this.props;
+    this.setState({
+      loading: true,
+    });
+    const response = await callApi(Data, 'put', 'trainee');
+    this.setState({ loading: false });
+    if (response && response.status === 'success') {
+      this.setState({
+        message: 'Trainee Updated Successfully',
+      }, () => {
+        const { message } = this.state;
+        onSubmit(Data);
+        openSnackBar(message, 'success');
+      });
+    } else {
+      this.setState({
+        message: 'Error while submitting',
+      }, () => {
+        const { message } = this.state;
+        openSnackBar(message, 'error');
+      });
+    }
+  }
+
+  formReset = () => {
+    this.setState({
+      name: '',
+      email: '',
+      touched: {},
+    });
+  }
+
   render() {
     const {
-      classes, open, onClose, onSubmit, data,
+      classes, open, onClose, data,
     } = this.props;
-    const { hasError, error } = this.state;
-    this.hasErrors();
+    const { name, email, loading } = this.state;
+    const { originalId: id } = data;
     return (
       <Dialog
         open={open}
@@ -118,11 +153,10 @@ class EditDialog extends Component {
           </DialogContentText>
           <TextField
             label="Name *"
-            type="text"
+            type="name"
             autoComplete="off"
             fullWidth
             defaultValue={data.name}
-            error={error.name}
             helperText={this.getError('name')}
             onBlur={() => this.isTouched('name')}
             onChange={this.handleChange('name')}
@@ -140,11 +174,10 @@ class EditDialog extends Component {
           />
           <TextField
             label="Email Address"
-            type="text"
+            type="email"
             autoComplete="off"
             fullWidth
             defaultValue={data.email}
-            error={error.name}
             helperText={this.getError('email')}
             onBlur={() => this.isTouched('email')}
             onChange={this.handleChange('email')}
@@ -169,14 +202,18 @@ class EditDialog extends Component {
             {({ openSnackBar }) => (
               <Button
                 onClick={() => {
-                  onSubmit({ data });
-                  openSnackBar('Trainee Details Updated successfully! ', 'success');
+                  this.onEditHandler({ name, email, id }, openSnackBar);
+                  this.formReset();
                 }}
-                disabled={hasError}
+                disabled={this.hasErrors()}
                 color="primary"
                 variant="contained"
               >
-                Submit
+                {loading && (
+                  <CircularProgress size={15} />
+                )}
+                {loading && <span>Submitting</span>}
+                {!loading && <span>Submit</span>}
               </Button>
             )}
           </MyContext.Consumer>
