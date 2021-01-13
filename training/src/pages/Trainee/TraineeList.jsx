@@ -52,7 +52,7 @@ class TraineeList extends React.Component {
   };
 
   handleEditButton = (data) => {
-    this.setState({ EditOpen: false }, () => { console.log('Edited Item ', data.data); });
+    this.setState({ EditOpen: false }, () => { console.log('Edited Item ', data); });
   }
 
   handleDeleteButton = (data) => {
@@ -127,6 +127,7 @@ class TraineeList extends React.Component {
     const { open, order, orderBy, EditOpen,
       page, rowsPerPage, editData, DeleteOpen, deleteData, loading, dataObj, Count, } = this.state;
       console.log('dtOBJ:', dataObj);
+      console.log('deleteData',deleteData);
     const { match: { url }, classes } = this.props;
     return (
       <>
