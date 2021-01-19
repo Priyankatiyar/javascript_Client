@@ -48,15 +48,21 @@ class TraineeList extends React.Component {
   handleClose = () => {
     const { open } = this.state;
     this.setState({ open: false });
+    this.componentDidMount();
     return open;
   };
 
   handleEditButton = (data) => {
-    this.setState({ EditOpen: false }, () => { console.log('Edited Item ', data); });
+    this.setState({ EditOpen: false }, () => { console.log('Edited Item ', data);
+    this.componentDidMount();
+  });
   }
 
   handleDeleteButton = (data) => {
-    this.setState({ DeleteOpen: false }, () => { console.log('Deleted Item ', data.data); });
+    this.setState({ DeleteOpen: false }, () => { console.log('Deleted Item ', data.data);
+    this.componentDidMount();
+
+  });
   };
 
   handleSelect = (event, data) => {
@@ -76,6 +82,7 @@ class TraineeList extends React.Component {
       open: false,
     }, () => {
       console.log(data);
+      this.componentDidMount();
     });
   }
 
