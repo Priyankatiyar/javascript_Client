@@ -31,11 +31,11 @@ class TraineeList extends React.Component {
       orderBy: '',
       order: '',
       page: 0,
-      rowsPerPage: 10,
+      rowsPerPage: 6,
       editData: {},
       deleteData: {},
       count: 0,
-      limit: 20,
+      limit: 10,
       skip: 0,
       dataObj: [],
     };
@@ -61,7 +61,10 @@ class TraineeList extends React.Component {
   handleDeleteButton = (data) => {
     this.setState({ DeleteOpen: false }, () => { console.log('Deleted Item ', data.data);
     this.componentDidMount();
-
+    const { page } = this.state;
+    if (page > 0) {
+      this.setState({ page: page - 1 });
+    }
   });
   };
 
@@ -115,7 +118,7 @@ class TraineeList extends React.Component {
     const value = this.context;
     console.log('TraineeList value', value);
     callApi({}, 'get', `trainee?skip=${skip}&limit=${limit}`).then((response) => {
-      console.log('List Response',response);
+      console.log('List Response',response.data[0]);
       if (response.data === undefined) {
         this.setState({
           loading: false,
@@ -124,10 +127,10 @@ class TraineeList extends React.Component {
         });
       } else {
         const records = response.data[0];
-        this.setState({ dataObj: records, loading: false, Count: 100 });
+        this.setState({ dataObj: records, loading: false, Count: response.totalCount });
         return response;
       }
-      console.log('dataObj Response : ', response);
+      console.log('dataObj Response : ', records);
     });
   }
   render() {
