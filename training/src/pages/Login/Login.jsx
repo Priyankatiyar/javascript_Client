@@ -69,6 +69,8 @@ class Login extends React.Component {
   }
 
   getError = (field) => {
+    const { email, password }= this.state;
+    const data = { email: `${email}`, password: `${password}`}
     const { touched } = this.state;
     if (touched[field] && this.hasErrors()) {
       try {
