@@ -31,11 +31,11 @@ class TraineeList extends React.Component {
       orderBy: '',
       order: '',
       page: 0,
-      rowsPerPage: 10,
+      rowsPerPage: 6,
       editData: {},
       deleteData: {},
       count: 0,
-      limit: 20,
+      limit: 10,
       skip: 0,
       dataObj: [],
     };
@@ -48,15 +48,24 @@ class TraineeList extends React.Component {
   handleClose = () => {
     const { open } = this.state;
     this.setState({ open: false });
+    this.handleUpdateList();
     return open;
   };
 
   handleEditButton = (data) => {
-    this.setState({ EditOpen: false }, () => { console.log('Edited Item ', data); });
+    this.setState({ EditOpen: false }, () => { console.log('Edited Item ', data);
+    this.handleUpdateList();
+  });
   }
 
   handleDeleteButton = (data) => {
-    this.setState({ DeleteOpen: false }, () => { console.log('Deleted Item ', data.data); });
+    this.setState({ DeleteOpen: false }, () => { console.log('Deleted Item ', data.data);
+    this.handleUpdateList();
+    const { page } = this.state;
+    if (page > 0) {
+      this.setState({ page: page - 1 });
+    }
+  });
   };
 
   handleSelect = (event, data) => {
@@ -76,6 +85,7 @@ class TraineeList extends React.Component {
       open: false,
     }, () => {
       console.log(data);
+      this.handleUpdateList();
     });
   }
 
@@ -88,7 +98,7 @@ class TraineeList extends React.Component {
   }
 
   handleChangePage = (event, newPage) => {
-    this.componentDidMount(newPage);
+    this.handleUpdateList(newPage);
     this.setState({
       page: newPage,
     });
@@ -102,13 +112,13 @@ class TraineeList extends React.Component {
     });
   };
 
-  componentDidMount = () => {
+  handleUpdateList = () => {
     const { limit, skip, dataObj } = this.state;
     this.setState({ loading: true });
     const value = this.context;
     console.log('TraineeList value', value);
     callApi({}, 'get', `trainee?skip=${skip}&limit=${limit}`).then((response) => {
-      console.log('List Response',response);
+      console.log('List Response',response.data[0]);
       if (response.data === undefined) {
         this.setState({
           loading: false,
@@ -117,11 +127,15 @@ class TraineeList extends React.Component {
         });
       } else {
         const records = response.data[0];
-        this.setState({ dataObj: records, loading: false, Count: 100 });
+        this.setState({ dataObj: records, loading: false, Count: response.totalCount });
         return response;
       }
-      console.log('dataObj Response : ', response);
+      console.log('dataObj Response : ', records);
     });
+  }
+
+  componentDidMount() {
+    this.handleUpdateList();
   }
   render() {
     const { open, order, orderBy, EditOpen,
