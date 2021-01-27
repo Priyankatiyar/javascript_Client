@@ -1,6 +1,5 @@
 import { InMemoryCache } from 'apollo-boost';
 import ApolloClient from 'apollo-client';
-// import { split } from 'apollo-link';
 import { HttpLink } from 'apollo-link-http';
 import { setContext } from '@apollo/client/link/context';
 
