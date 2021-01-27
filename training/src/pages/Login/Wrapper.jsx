@@ -8,12 +8,12 @@ const updateCache = (cache, { data: { loginUser } }) => {
   localStorage.setItem('token', loginUser);
 };
 
-export default () => {
+export default () => (
   <Mutation mutation={LOGIN_USER} update={updateCache}>
     {(loginUser) => (
       <>
         <Login loginUser={loginUser} />
       </>
     )}
-  </Mutation>;
-};
+  </Mutation>
+);

@@ -10,7 +10,7 @@ import { Email, VisibilityOff, LockOutlined } from '@material-ui/icons';
 import * as yup from 'yup';
 import localStorage from 'local-storage';
 import { Redirect } from 'react-router-dom';
-import callApi from '../../libs/utils/api';
+
 import { MyContext } from '../../contexts';
 
 const LoginStyle = (theme) => ({
@@ -101,14 +101,17 @@ class Login extends React.Component {
   }
 
   onClickHandler = async (data, openSnackBar) => {
+    const { loginUser } = this.props;
+    const { email, password } = data;
     console.log('Data is :', data);
+    console.log('loginUser----', loginUser);
     this.setState({
       loading: true,
       hasError: true,
     });
-    const response= await callApi(data, 'post', 'user/login');
+    const response = await loginUser({ variables: { email, password }});
     console.log('ResponseToken', response);
-    localStorage.set('token', response.data);
+    localStorage.set('token', response.data.loginUser);
     this.setState({ loading: false });
     const Token = localStorage.get('token');
     if (Token !== 'undefined') {

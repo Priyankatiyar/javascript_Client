@@ -4,6 +4,7 @@
   "private": true,
   "main": "index.js",
   "dependencies": {
+    "@apollo/client": "^3.3.7",
     "@apollo/react-components": "^4.0.0",
     "@apollo/react-hoc": "^4.0.0",
     "@apollo/react-hooks": "^4.0.0",

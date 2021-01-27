@@ -4,7 +4,7 @@ import {
   BrowserRouter as Router, Route, Switch,
   Redirect,
 } from 'react-router-dom';
-import { ApolloProvider } from '@apollo/react-hooks';
+import { ApolloProvider } from '@apollo/react-components';
 import {
   Login, InputDemo, ChildrenDemo, Trainee, TextFieldDemo,
   NoMatch,
@@ -20,15 +20,15 @@ class App extends Component {
         <SnackBarProvider>
           <ApolloProvider client={apolloClient}>
             <Switch>
-              <Route path="/login" component={AuthRoute} />
-              <Route default component={PrivateRoute} />
-              {/* </Route>
+              <Route path="/" exact>
+                <Redirect to="/trainee" />
+              </Route>
               <AuthRoute path="/login" component={Login} />
               <PrivateRoute path="/text-field" component={TextFieldDemo} />
               <PrivateRoute path="/childrenDemo" component={ChildrenDemo} />
               <PrivateRoute path="/inputDemo" component={InputDemo} />
               <PrivateRoute path="/trainee" component={Trainee} />
-              <PrivateRoute component={NoMatch} /> */}
+              <PrivateRoute component={NoMatch} />
             </Switch>
           </ApolloProvider>
         </SnackBarProvider>
