@@ -48,19 +48,19 @@ class TraineeList extends React.Component {
   handleClose = () => {
     const { open } = this.state;
     this.setState({ open: false });
-    this.componentDidMount();
+    this.handleUpdateList();
     return open;
   };
 
   handleEditButton = (data) => {
     this.setState({ EditOpen: false }, () => { console.log('Edited Item ', data);
-    this.componentDidMount();
+    this.handleUpdateList();
   });
   }
 
   handleDeleteButton = (data) => {
     this.setState({ DeleteOpen: false }, () => { console.log('Deleted Item ', data.data);
-    this.componentDidMount();
+    this.handleUpdateList();
     const { page } = this.state;
     if (page > 0) {
       this.setState({ page: page - 1 });
@@ -85,7 +85,7 @@ class TraineeList extends React.Component {
       open: false,
     }, () => {
       console.log(data);
-      this.componentDidMount();
+      this.handleUpdateList();
     });
   }
 
@@ -98,7 +98,7 @@ class TraineeList extends React.Component {
   }
 
   handleChangePage = (event, newPage) => {
-    this.componentDidMount(newPage);
+    this.handleUpdateList(newPage);
     this.setState({
       page: newPage,
     });
@@ -112,7 +112,7 @@ class TraineeList extends React.Component {
     });
   };
 
-  componentDidMount = () => {
+  handleUpdateList = () => {
     const { limit, skip, dataObj } = this.state;
     this.setState({ loading: true });
     const value = this.context;
@@ -132,6 +132,10 @@ class TraineeList extends React.Component {
       }
       console.log('dataObj Response : ', records);
     });
+  }
+
+  componentDidMount() {
+    this.handleUpdateList();
   }
   render() {
     const { open, order, orderBy, EditOpen,
