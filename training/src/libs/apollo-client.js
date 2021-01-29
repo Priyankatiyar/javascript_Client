@@ -8,11 +8,11 @@ const httpLink = new HttpLink({ uri: 'http://localhost:9000/graphql' });
 const cache = new InMemoryCache();
 
 const authLink = setContext((_, { headers }) => {
-  const token = localStorage.getItem('token');
+  const token = JSON.parse(localStorage.getItem('token'));
   return {
     headers: {
       ...headers,
-      authorization: token ? `Bearer ${token}` : '',
+      authorization: token,
     },
   };
 });
