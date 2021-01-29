@@ -66,7 +66,7 @@ const CustomizedSnackbars = () => {
   };
   return (
     <div>
-      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+      <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
         {status === 'success' ? (
           <Alert onClose={handleClose} severity="success">
             {message}

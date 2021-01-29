@@ -7,8 +7,11 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { AddDialog, RemoveDialog, EditDialog } from './components/index';
 import trainees from './data/trainee';
+import { graphql } from '@apollo/react-hoc';
+import Compose from 'lodash.flowright';
+import { GET_TRAINEE } from './query';
 import { TableComponent } from '../../components';
-import callApi from '../../libs/utils/api';
+import { MyContext } from '../../contexts/index';
 import { getDateFormatted } from '../../libs/utils/getDateFormatted';
 
 const useStyles = (theme) => ({
@@ -48,19 +51,16 @@ class TraineeList extends React.Component {
   handleClose = () => {
     const { open } = this.state;
     this.setState({ open: false });
-    this.handleUpdateList();
     return open;
   };
 
   handleEditButton = (data) => {
     this.setState({ EditOpen: false }, () => { console.log('Edited Item ', data);
-    this.handleUpdateList();
   });
   }
 
   handleDeleteButton = (data) => {
     this.setState({ DeleteOpen: false }, () => { console.log('Deleted Item ', data.data);
-    this.handleUpdateList();
     const { page } = this.state;
     if (page > 0) {
       this.setState({ page: page - 1 });
@@ -85,7 +85,6 @@ class TraineeList extends React.Component {
       open: false,
     }, () => {
       console.log(data);
-      this.handleUpdateList();
     });
   }
 
@@ -93,14 +92,23 @@ class TraineeList extends React.Component {
     this.setState({ EditOpen: true, editData: data });
   }
 
+  handleEdit = (name, email) => {
+    this.setState({
+      EditOpen: false,
+    });
+    console.log('Edited Item ', { name, email });
+  };
+
   handleRemoveDialogOpen = (data) => {
     this.setState({ DeleteOpen: true, deleteData: data });
   }
 
-  handleChangePage = (event, newPage) => {
-    this.handleUpdateList(newPage);
+  handleChangePage = (refetch) => (event, newPage) => {
+    const { rowsPerPage } = this.state;
     this.setState({
       page: newPage,
+    }, () => {
+      refetch({ skip: newPage * (rowsPerPage.length), limit: rowsPerPage.length });
     });
   };
 
@@ -112,37 +120,19 @@ class TraineeList extends React.Component {
     });
   };
 
-  handleUpdateList = () => {
-    const { limit, skip, dataObj } = this.state;
-    this.setState({ loading: true });
-    const value = this.context;
-    console.log('TraineeList value', value);
-    callApi({}, 'get', `trainee?skip=${skip}&limit=${limit}`).then((response) => {
-      console.log('List Response',response.data[0]);
-      if (response.data === undefined) {
-        this.setState({
-          loading: false,
-          message: 'This is an error while displaying Trainee',
-        }, () => {
-        });
-      } else {
-        const records = response.data[0];
-        this.setState({ dataObj: records, loading: false, Count: response.totalCount });
-        return response;
-      }
-      console.log('dataObj Response : ', records);
-    });
-  }
-
-  componentDidMount() {
-    this.handleUpdateList();
-  }
   render() {
     const { open, order, orderBy, EditOpen,
-      page, rowsPerPage, editData, DeleteOpen, deleteData, loading, dataObj, Count, } = this.state;
-      console.log('dtOBJ:', dataObj);
+      page, rowsPerPage, editData, DeleteOpen, deleteData, } = this.state;
       console.log('deleteData',deleteData);
-    const { match: { url }, classes } = this.props;
+    const { classes } = this.props;
+    const {
+      data: {
+        getAllTrainees: { data = [], totalCount = 0 } = {},
+        refetch,
+        loading,
+      },
+    } = this.props;
+    console.log('dduygd', data[0]);
     return (
       <>
         <div className={classes.root}>
@@ -151,12 +141,13 @@ class TraineeList extends React.Component {
               ADD TRAINEELIST
             </Button>
           </div>
-          <AddDialog open={open} onClose={this.handleClose} onSubmit={() => this.handleSubmit} />
+          <AddDialog open={open} onClose={this.handleClose} onSubmit={() => this.handleSubmit}  refetch={refetch} />
           &nbsp;
           &nbsp;
           <EditDialog
             onClose={this.handleEditButton}
             open={EditOpen}
+            handleEdit={this.handleEdit}
             onSubmit={this.handleEditButton}
             data={editData}
           />
@@ -169,13 +160,13 @@ class TraineeList extends React.Component {
           <TableComponent
             loader={loading}
             id="id"
-            data={dataObj}
+            data={data[0]}
             column={
               [
                 {
                   field: 'name',
                   lable: 'Name',
-                },
+                 },
                 {
                   field: 'email',
                   lable: 'Email Address',
@@ -203,10 +194,10 @@ class TraineeList extends React.Component {
             order={order}
             onSort={this.handleSort}
             onSelect={this.handleSelect}
-            count={Count}
+            count={totalCount}
             page={page}
             rowsPerPage={rowsPerPage}
-            onChangePage={this.handleChangePage}
+            onChangePage={this.handleChangePage(refetch, totalCount)}
             onChangeRowsPerPage={this.handleChangeRowsPerPage}
           />
         </div>
@@ -214,8 +205,14 @@ class TraineeList extends React.Component {
     );
   }
 }
+TraineeList.contextType = MyContext;
 TraineeList.propTypes = {
-  match: PropTypes.objectOf(PropTypes.object).isRequired,
+  data: PropTypes.objectOf(PropTypes.string).isRequired,
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
 };
-export default withStyles(useStyles)(TraineeList);
+export default Compose (
+  withStyles(useStyles),
+  graphql(GET_TRAINEE, {
+    options: { variables: { skip: 0, limit: 10, sort: 'name'}}
+  }),
+)(TraineeList);
