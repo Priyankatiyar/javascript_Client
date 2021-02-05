@@ -1,1 +1,1 @@
-export { default as RemoveDialog } from './RemoveDialog';
+export { default as RemoveDialog } from './Wrapper';

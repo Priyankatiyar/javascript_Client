@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-underscore-dangle */
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
@@ -7,7 +8,6 @@ import {
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import { MyContext } from '../../../../contexts';
-import callApi from '../../../../libs/utils/api';
 
 const useStyles = () => ({
   buttonColor: {
@@ -37,10 +37,12 @@ class RemoveDialog extends Component {
       loading: true,
     });
     const { onSubmit } = this.props;
+    const { deleteTrainee, refetch } = this.props;
     const { originalId } = data.data;
-    const response = await callApi({ }, 'delete', `trainee/${originalId}`);
+    const response = await deleteTrainee({ variables: { originalId } });
     this.setState({ loading: false });
-    if (response && response.status === 'success') {
+    if (response && response.data.deleteTrainee.status === 'success') {
+      refetch();
       this.setState({
         message: 'Trainee Deleted Successfully ',
       }, () => {
@@ -60,7 +62,7 @@ class RemoveDialog extends Component {
 
   render() {
     const {
-      classes, open, onClose, data,
+      classes, open, onClose, data, onSubmit,
     } = this.props;
     const { loading } = this.state;
 
@@ -84,6 +86,7 @@ class RemoveDialog extends Component {
                   className={classes.buttonColor}
                   variant="contained"
                   onClick={() => {
+                    onSubmit({ data });
                     this.onDeleteHandler({ data }, openSnackBar);
                   }}
                 >
