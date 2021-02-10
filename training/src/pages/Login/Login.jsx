@@ -111,10 +111,12 @@ class Login extends React.Component {
     });
     const response = await loginUser({ variables: { email, password }});
     console.log('ResponseToken', response);
-    localStorage.set('token', response.data.loginUser);
+    if (response.data.loginUser !== null){
+      localStorage.set('token', response.data.loginUser);
+    }
     this.setState({ loading: false });
-    const Token = localStorage.get('token');
-    if (Token !== 'undefined') {
+    // const Token = localStorage.get('token');
+    if (response.data.loginUser !== null) {
       this.setState({
         redirect: true,
         hasError: false,
@@ -131,7 +133,7 @@ class Login extends React.Component {
         openSnackBar(message, 'error');
       });
     }
-  }
+}
 
   render() {
     const { classes } = this.props;
