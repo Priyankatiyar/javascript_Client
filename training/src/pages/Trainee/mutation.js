@@ -14,7 +14,10 @@ mutation UpdateTrainee($id: ID! $name: String, $email: String) {
     updateTrainee(payload: { id: $id, name: $name, email: $email})
     {
       name
-      id
+      _id
+      email
+      originalId
+      createdAt
     }
 }
 `;

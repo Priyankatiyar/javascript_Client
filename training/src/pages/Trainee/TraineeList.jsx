@@ -15,6 +15,8 @@ import { TableComponent } from '../../components';
 import { MyContext } from '../../contexts/index';
 import { getDateFormatted } from '../../libs/utils/getDateFormatted';
 import { UPDATE_TRAINEE, CREATE_TRAINEE } from './mutation';
+import { DELETED_TRAINEE_SUB, UPDATED_TRAINEE_SUB, CREATE_TRAINEE_SUB } from './Subscription';
+
 
 const useStyles = (theme) => ({
   root: {
@@ -149,6 +151,81 @@ class TraineeList extends React.Component {
     }
   };
 
+  componentDidMount = () => {
+    console.log('inside componentdidmounty;;;;');
+    const { data: { subscribeToMore } } = this.props;
+    subscribeToMore({
+      document: UPDATED_TRAINEE_SUB,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData) return prev;
+        const { getAllTrainees: { data } } = prev;
+        console.log('3333333333333333', data);
+        const { data: { traineeUpdated } } = subscriptionData;
+        console.log('3.55555555555555555555', traineeUpdated[0]);
+        const r = [];
+        const updatedRecords = [...data].map((records) => {
+          console.log('recccoojj--', records.originalId);
+          if (records.originalId !== traineeUpdated[0].originalId) {
+            r.push(records);
+
+            return {
+              ...data,
+              ...traineeUpdated,
+            };
+          }
+          return data;
+        });
+        r.push(traineeUpdated[0]);
+        console.log('444444444444', r);
+        return {
+          getAllTrainees: {
+            ...prev.getAllTrainees,
+            ...prev.getAllTrainees.totalCount,
+            data: r,
+          },
+        };
+      },
+    });
+    subscribeToMore({
+      document: DELETED_TRAINEE_SUB,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData) return prev;
+        const { getAllTrainees: { data } } = prev;
+        const { data: { traineeDeleted } } = subscriptionData;
+        const updatedRecords = [...data].filter((records) => records.originalId !== traineeDeleted.data);
+        console.log('9999999999999', updatedRecords);
+        return {
+          getAllTrainees: {
+            ...prev.getAllTrainees,
+            ...prev.getAllTrainees.totalCount - 1,
+            data: updatedRecords,
+          },
+        };
+      },
+    });
+    subscribeToMore({
+      document: CREATE_TRAINEE_SUB,
+      updateQuery: (prev, { subscriptionData }) => {
+        console.log('tstst---', prev);
+        if (!subscriptionData) return prev;
+        const { getAllTrainees: { data } } = prev;
+        console.log('getCrettttSyyu--', getAllTrainees, data, prev);
+        const { data: { traineeAdded } } = subscriptionData;
+        console.log('jfjfj--203;', traineeAdded);
+        data.unshift(traineeAdded);
+        const updatedRecords = [...data].unshift((records) => records.originalId !== traineeAdded.originalId);
+        console.log('444jfjfj--203;', updatedRecords);
+        return {
+          getAllTrainees: {
+            ...prev.getAllTrainees,
+            totalCountOfData: parseInt(prev.getAllTrainees.totalCount) + 1,
+            data: updatedRecords,
+          },
+        };
+      },
+    });
+  }
+
   render() {
     const { open, order, orderBy, EditOpen,
       page, rowsPerPage, editData, DeleteOpen, deleteData, } = this.state;
@@ -162,7 +239,7 @@ class TraineeList extends React.Component {
       },
     } = this.props;
     const variables = { skip: page * rowsPerPage.length, limit: rowsPerPage.length };
-    console.log('dduygd', data[0]);
+    console.log('dduygd', data);
     return (
       <>
         <Mutation
@@ -215,7 +292,7 @@ class TraineeList extends React.Component {
                         <TableComponent
                           loader={loading}
                           id="id"
-                          data={data[0]}
+                          data={data}
                           column={
                             [
                               {
@@ -275,6 +352,6 @@ TraineeList.propTypes = {
 export default Compose (
   withStyles(useStyles),
   graphql(GET_TRAINEE, {
-    options: { variables: { skip: 0, limit: 10, sort: 'email'}}
+    options: { variables: { skip: 0, limit: 10, sort: 'name'}}
   }),
 )(TraineeList);
